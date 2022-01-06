@@ -56,19 +56,12 @@ app
     res.json({ name: `${req.query.first} ${req.query.last}` });
   })
   .post((req, res) => {
-    console.log(req.body);
-    res.json({ name: `${req.body.first} ${req.body.last}` });
+    console.log(typeof req.body);
+    console.log(JSON.stringify(req.body));
+    const name = `${req.body.first} ${req.body.last}`;
+    res.json({ name: name });
   });
-// (req, res, next) => {
-//   console.log("test post");
-//   next();
-// },
-// bodyParser,
-// (req, res) => {
-//   res.json({ name: `${req.body.first} ${req.body.last}`});
-// });
 
-app.post("/name2", (req, res) => res.send("post"));
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
