@@ -1,9 +1,12 @@
 var express = require("express");
+var bodyParser = require("body-parser");
+const res = require("express/lib/response");
 var app = express();
 
 console.log("Hello World");
 
 app.use("/public", express.static(__dirname + "/public"));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // middleware to use dotenv in local testing
 app.get("*", (req, res, next) => {
@@ -44,11 +47,28 @@ app.get("/:word/echo", (req, res) => {
   res.json({ echo: req.params.word });
 });
 
+// chain routes
 // use query parameters
-app.route("/name")
-.get((req, res) => {
-  res.json({ name: `${req.query.first} ${req.query.last}` });
-});
+// handle POST
+app
+  .route("/name")
+  .get((req, res) => {
+    res.json({ name: `${req.query.first} ${req.query.last}` });
+  })
+  .post((req, res) => {
+    console.log(req.body);
+    res.json({ name: `${req.body.first} ${req.body.last}` });
+  });
+// (req, res, next) => {
+//   console.log("test post");
+//   next();
+// },
+// bodyParser,
+// (req, res) => {
+//   res.json({ name: `${req.body.first} ${req.body.last}`});
+// });
+
+app.post("/name2", (req, res) => res.send("post"));
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
