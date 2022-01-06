@@ -11,22 +11,27 @@ app.get("*", (req, res, next) => {
     require("dotenv").config();
   }
   next();
-})
+});
 
 // middleware to log requests
 app.get("*", (req, res, next) => {
-  console.log(`${req.method} ${req.path} - ${req.ip}`)
+  console.log(`${req.method} ${req.path} - ${req.ip}`);
   next();
 });
 
 // chain a middleware function and a final handler
-app.get("/now", (req, res, next) => {
-  req.time = new Date().toString();
-  next();
-}, (req, res) => {
-  res.json({time: req.time})
-})
+app.get(
+  "/now",
+  (req, res, next) => {
+    req.time = new Date().toString();
+    next();
+  },
+  (req, res) => {
+    res.json({ time: req.time });
+  }
+);
 
+// use env variable
 app.get("/json", (req, res) => {
   res.json({
     message:
@@ -34,9 +39,16 @@ app.get("/json", (req, res) => {
   });
 });
 
+// use route parameters
 app.get("/:word/echo", (req, res) => {
-  res.json({echo: req.params.word});
-})
+  res.json({ echo: req.params.word });
+});
+
+// use query parameters
+app.route("/name")
+.get((req, res) => {
+  res.json({ name: `${req.query.first} ${req.query.last}` });
+});
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
