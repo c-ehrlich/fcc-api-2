@@ -56,8 +56,6 @@ app
     res.json({ name: `${req.query.first} ${req.query.last}` });
   })
   .post((req, res) => {
-    console.log(typeof req.body);
-    console.log(JSON.stringify(req.body));
     const name = `${req.body.first} ${req.body.last}`;
     res.json({ name: name });
   });
