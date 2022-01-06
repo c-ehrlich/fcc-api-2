@@ -13,10 +13,19 @@ app.get("*", (req, res, next) => {
   next();
 })
 
+// middleware to log requests
 app.get("*", (req, res, next) => {
   console.log(`${req.method} ${req.path} - ${req.ip}`)
   next();
 });
+
+// chain a middleware function and a final handler
+app.get("/now", (req, res, next) => {
+  req.time = new Date().toString();
+  next();
+}, (req, res) => {
+  res.json({time: req.time})
+})
 
 app.get("/json", (req, res) => {
   res.json({
